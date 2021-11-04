@@ -2,6 +2,7 @@ const express = require('express');
 const app = express()
 const mysql = require('mysql');
 const cors = require('cors');
+const port = 3001;
 
 app.use(cors());
 app.use(express.json());
@@ -45,6 +46,6 @@ app.get('/employees', (req, res) => {
     })
 })
 
-app.listen(3001, () => {
-    console.log("SErver is running")
+app.listen(process.env.port || port, () => {
+    console.log(`SErver is running ${port}`);
 });
