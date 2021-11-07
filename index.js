@@ -2,17 +2,26 @@ const express = require('express');
 const app = express()
 const mysql = require('mysql');
 const cors = require('cors');
+const corsOptions ={
+    origin:'http://localhost:3000', 
+    credentials:true,         
+    optionSuccessStatus:200
+}
 const PORT = 3001;
 
 app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-    user: 'root',
-    host: 'localhost',
-    password: 'Mongolia9939',
-    database: 'employeesystem'
+    user: 'b8b53739e00f0f',
+    host: 'us-cdbr-east-04.cleardb.com',
+    password: '30eaf774',
+    database: 'heroku_3ee373ed9bd978b'
 });
+
+
+
+
 
 app.post('/create', (req, res) => {
     const Нэр = req.body.Нэр
@@ -33,7 +42,6 @@ app.post('/create', (req, res) => {
      }
      
      )
-
 })
 
 app.get('/employees', (req, res) => {
@@ -45,6 +53,7 @@ app.get('/employees', (req, res) => {
         }
     })
 })
+
 
 app.listen(process.env.PORT || PORT, () => {
     console.log(`SErver is running ${PORT}`);
