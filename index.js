@@ -70,3 +70,7 @@ app.get("/employees", (req, res) => {
 app.listen(process.env.PORT || PORT, () => {
   console.log(`SErver is running ${PORT}`);
 });
+
+pool.query("select 1 + 1", (err, rows) => {
+  /* */
+});
