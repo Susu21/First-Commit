@@ -42,7 +42,22 @@ app.post('/create', (req, res) => {
      }
      
      )
-})
+});
+
+ app.put("/update", (req, res) => {
+     const id = req.body.id;
+     const Цалин = req.body.Цалин;
+     db.query("UPDATE SET employees цалин = ? WHERE id =?", [Цалин, id], (err, result) => {
+        if (err){
+             console.log(err);
+         }else{
+             res.send(result);
+         }
+     });
+ });
+
+
+// app.delete()
 
 app.get('/employees', (req, res) => {
     db.query("SELECT * FROM employees", (err, result) => {
