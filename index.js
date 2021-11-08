@@ -44,17 +44,20 @@ app.post('/create', (req, res) => {
      )
 });
 
- app.put("/update", (req, res) => {
-     const id = req.body.id;
-     const Цалин = req.body.Цалин;
-     db.query("UPDATE SET employees цалин = ? WHERE id =?", [Цалин, id], (err, result) => {
-        if (err){
-             console.log(err);
-         }else{
-             res.send(result);
-         }
-     });
- });
+//  app.put("/update", (req, res) => {
+//      const id = req.body.id;
+//      const Цалин = req.body.Цалин;
+//      db.query(
+//          "UPDATE SET employees цалин = ? WHERE id =?", 
+//          [Цалин, id], 
+//          (err, result) => {
+//         if (err) {
+//              console.log(err);
+//          } else {
+//              res.send(result);
+//          }
+//      });
+//  });
 
 
 // app.delete()
@@ -73,3 +76,5 @@ app.get('/employees', (req, res) => {
 app.listen(process.env.PORT || PORT, () => {
     console.log(`SErver is running ${PORT}`);
 });
+
+module.exports = db;
