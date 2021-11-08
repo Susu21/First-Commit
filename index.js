@@ -2,11 +2,11 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
-// const corsOptions = {
-//   origin: "http://localhost:3000",
-//   credentials: true,
-//   optionSuccessStatus: 200,
-// };
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+  optionSuccessStatus: 200,
+};
 const PORT = 3001;
 
 app.use(cors());
