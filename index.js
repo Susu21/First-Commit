@@ -1,37 +1,39 @@
 const express = require("express");
 const app = express();
-const { Sequelize } = require('Sequelize');
+const { Sequelize } = require("Sequelize");
 const mysql = require("mysql");
 const cors = require("cors");
 const corsOptions = {
-    origin: "http://localhost:3000",
-    credentials: true,
-    optionSuccessStatus: 200,
+  origin: "http://localhost:3000",
+  credentials: true,
+  optionSuccessStatus: 200,
 };
 
-// const sequelize = new Sequelize('heroku_3ee373ed9bd978b', 'b8b53739e00f0f', 
+const sequelize = new Sequelize(
+  "heroku_3ee373ed9bd978b",
+  "b8b53739e00f0f",
 
-// '30eaf774')
+  "30eaf774"
+);
 
-// try {
-//    sequelize.authenticate();
-//   console.log('Holbolt amjilttai.');
-// } catch (error) {
-//   console.error('holbolt amjiltgui', error)
-// }
-
+try {
+  sequelize.authenticate();
+  console.log("Holbolt amjilttai.");
+} catch (error) {
+  console.error("holbolt amjiltgui", error);
+}
 
 const PORT = 3001;
 
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
-  user: "b8b53739e00f0f",
-  host: "us-cdbr-east-04.cleardb.com",
-  password: "30eaf774",
-  database: "heroku_3ee373ed9bd978b",
-});
+// const db = mysql.createConnection({
+//   user: "b8b53739e00f0f",
+//   host: "us-cdbr-east-04.cleardb.com",
+//   password: "30eaf774",
+//   database: "heroku_3ee373ed9bd978b",
+// });
 
 app.post("/create", (req, res) => {
   const Нэр = req.body.Нэр;
@@ -41,17 +43,17 @@ app.post("/create", (req, res) => {
   const Цалин = req.body.Цалин;
 
   db.query(
-    "INSERT INTO employees (Нэр, Нас, Хот, албантушаал, Цалин) VALUES (?,?,?,?,?)",   
-    [Нэр, Нас, Хот, албантушаал, Цалин] 
-  )
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send("Values Inserted");
-      }
+    "INSERT INTO employees (Нэр, Нас, Хот, албантушаал, Цалин) VALUES (?,?,?,?,?)",
+    [Нэр, Нас, Хот, албантушаал, Цалин]
+  );
+  (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send("Values Inserted");
     }
-  });
+  };
+});
 
 app.put("/update", (req, res) => {
   const id = req.body.id;
