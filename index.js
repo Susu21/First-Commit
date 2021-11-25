@@ -207,6 +207,26 @@ app.get("/seeTree", (req, res) => {
   );
 });
 
+app.get("/TreeSee", (req, res) => {
+  db.query("SELECT * FROM treeNode", [], (err, result) => {
+    if (err) {
+      const returnResult = {
+        status: "failed",
+        response: err,
+      };
+      res.status(400).send(returnResult);
+    } else {
+      if (!isEmpty(result)) {
+        const returnResult = {
+          status: "success",
+          response: result,
+        };
+        res.status(200).send(returnResult);
+      }
+    }
+  });
+});
+
 app.post("/insertNode", (req, res) => {
   const ProfilePicture = req.body.ProfilePicture;
   const lName = req.body.lName;
