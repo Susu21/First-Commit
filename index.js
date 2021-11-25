@@ -9,7 +9,7 @@ const corsOptions = {
   credentials: true,
   optionSuccessStatus: 200,
 };
-
+// mysql://bf2dfd37cb3004:39eeabdb@us-cdbr-east-04.cleardb.com/heroku_9ace730553ea8cc?reconnect=true
 // const sequelize = new Sequelize(
 //   "heroku_3ee373ed9bd978b",
 //   "b8b53739e00f0f",
@@ -30,11 +30,10 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-  user: "root",
-  host: "127.0.0.1",
-  password: "Mongolia9939",
-  database: "Family Tree",
-  port: 3306,
+  user: "bf2dfd37cb3004",
+  host: "us-cdbr-east-04.cleardb.com",
+  password: "39eeabdb",
+  database: "heroku_9ace730553ea8cc",
 });
 
 app.post("/Login", (req, res) => {
