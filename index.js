@@ -5,7 +5,7 @@ const mysql = require("mysql");
 const cors = require("cors");
 const { isEmpty } = require("lodash");
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "*",
   credentials: true,
   optionSuccessStatus: 200,
 };
@@ -36,16 +36,23 @@ const db = mysql.createConnection({
   database: "heroku_9ace730553ea8cc",
 });
 
+// const db = mysql.createConnection({
+//   user: "root",
+//   host: "127.0.0.1",
+//   password: "Mongolia9939",
+//   database: "family",
+// });
+
 app.post("/Login", (req, res) => {
   console.log("*************************************");
   const UserName = req.body.UserName;
   const Password = req.body.Password;
   db.query(
-    "SELECT * FROM users WHERE userName = ? AND password = ?",
+    "SELECT * FROM base_person WHERE userName = ? AND password = ?",
     [UserName, Password],
     (err, result) => {
       if (err) {
-        console.log("Aldaatai BAindaa", err);
+        console.log("Aldaa nuuts ug buruu", err);
         const returnResult = {
           status: "failed",
           response: err,
@@ -112,7 +119,7 @@ app.post("/createUser", (req, res) => {
   const Password = req.body.Password;
 
   db.query(
-    "INSERT INTO users (RegNumber, lName, fName, eMail, PhoneNumber, Password, userName) VALUES (?,?,?,?,?,?,?)",
+    "INSERT INTO base_person (RegNumber, lName, fName, eMail, PhoneNumber, Password, userName) VALUES (?,?,?,?,?,?,?)",
     [RegNumber, lName, fName, eMail, PhoneNumber, Password, userName],
     (err, result) => {
       if (err) {
@@ -171,21 +178,22 @@ app.get("/seeTree", (req, res) => {
   const lName = req.body.lName;
   const date_of_birth = req.body.date_of_birth;
   const place_of_birth = req.body.place_of_birth;
-  const other_individual_details = req.body.other_individual_details;
   const gender = req.body.Gender;
   const date_of_death = req.body.date_of_death;
+  const notes = req.body.notes;
+  const picture = req.body.picture;
 
   db.query(
-    "SELECT * FROM individuals (date_of_birth, lName, fName, place_of_birth, other_individual_details, gender, date_of_death) VALUES (?,?,?,?,?,?,?)",
+    "SELECT * FROM base_person (date_of_birth, lName, fName, place_of_birth, notes, gender, date_of_death, picture) VALUES (?,?,?,?,?,?,?,?)",
     [
       place_of_birth,
       lName,
       fName,
       date_of_birth,
-      other_individual_details,
-      date_of_birth,
       gender,
       date_of_death,
+      notes,
+      picture,
     ],
     (err, result) => {
       if (err) {
@@ -207,24 +215,60 @@ app.get("/seeTree", (req, res) => {
   );
 });
 
-app.get("/TreeSee", (req, res) => {
-  db.query("SELECT * FROM treeNode", [], (err, result) => {
-    if (err) {
-      const returnResult = {
-        status: "failed",
-        response: err,
-      };
-      res.status(400).send(returnResult);
-    } else {
-      if (!isEmpty(result)) {
+app.get("/SearchFamily", (req, res) => {
+  const Name = req.body.Name;
+  const Description = req.body.Description;
+  const Created_Date = req.body.created_Date;
+  db.query(
+    "SELECT * FROM Family_Name (Name, Description, Created_Date) VALUES (?,?,?)",
+    [Name, Description, Created_Date],
+    (err, result) => {
+      if (err) {
         const returnResult = {
-          status: "success",
-          response: result,
+          status: "failed",
+          response: err,
         };
-        res.status(200).send(returnResult);
+        res.status(400).send(returnResult);
+      } else {
+        if (!isEmpty(result)) {
+          const returnResult = {
+            status: "success",
+            response: result,
+          };
+          res.status(200).send(returnResult);
+        }
       }
     }
-  });
+  );
+});
+
+app.post("/insertFamily", (req, res) => {
+  const Name = req.body.Name;
+  const Description = req.body.Description;
+  const Created_Date = req.body.Created_Date;
+
+  db.query(
+    "INSERT INTO Family_Name (Name, Description, Created_Date) VALUES (?,?,?)",
+    [Name, Description, Created_Date],
+    (err, result) => {
+      if (err) {
+        console.log("Zaa bolkueenaaa!!!!!!!!!!!!!!!!!!!!!", err);
+        const returnResult = {
+          status: "failed",
+          response: err,
+        };
+        res.status(400).send(returnResult);
+      } else {
+        if (!isEmpty(result)) {
+          const returnResult = {
+            status: "success",
+            response: result,
+          };
+          res.status(200).send(returnResult);
+        }
+      }
+    }
+  );
 });
 
 app.post("/insertNode", (req, res) => {
