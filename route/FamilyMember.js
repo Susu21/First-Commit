@@ -2,11 +2,11 @@ const express = require("express");
 const {
   AddFamMember,
   DeleteFamilyMember,
-  SelectFamilyMember,
+  selectPID,
 } = require("../controller/FamilyMember");
 const router = express.Router();
 
 router.route("/").post(AddFamMember);
-router.route("/").get(SelectFamilyMember);
+router.route("/:pID").get(selectPID);
 router.route("/:bpid").delete(DeleteFamilyMember);
 module.exports = router;

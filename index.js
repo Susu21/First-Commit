@@ -56,3 +56,5 @@ app.use("/FriendRequest", friendRequestRoute);
 app.listen(PORT, () => {
   console.log(`Server is running ${PORT}`);
 });
+
+// Error.stackTraceLimit = Infinity;

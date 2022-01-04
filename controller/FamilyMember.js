@@ -2,13 +2,13 @@ const { isEmpty } = require("lodash");
 const db = require("../LocalHost");
 
 exports.AddFamMember = async (req, res, next) => {
-  const ID = req.body.ID;
-  const personID = req.body.personID;
-  const familyID = req.body.personID;
+  const personID = req.body.personId;
+  const familyID = req.body.familyId;
+  const Status = 0;
 
   db.query(
-    "INSERT INTO familymember ( ID, personID, familyID) VALUES (?,?,?)",
-    [ID, personID, familyID],
+    "INSERT INTO familymember ( personID, familyID, Status) VALUES (?,?,?)",
+    [personID, familyID, Status],
     (err, result) => {
       if (err) {
         const returnResult = {
@@ -44,17 +44,27 @@ exports.DeleteFamilyMember = async (req, res, next) => {
     }
   );
 };
-exports.SelectFamilyMember = async (req, res, next) => {
-  const ID = req.body.ID;
-  // const family_ID = req.body.family_ID;
+exports.selectPID = async (req, res, next) => {
+  const pID = req.params.pID;
   db.query(
-    "SELECT familyId, personId FROM familymember WHERE ID = ?",
-    [ID],
+    "select personId from familymember where familyId = ?",
+    [pID],
     (err, result) => {
       if (err) {
-        console.log(err);
+        console.log("Zaa bolkueenaaa!!!!!!!!!!!!!!!!!!!!!", err);
+        const returnResult = {
+          status: "failed",
+          response: err,
+        };
+        res.status(400).send(returnResult);
       } else {
-        res.send(result);
+        if (!isEmpty(result)) {
+          const returnResult = {
+            status: "success",
+            response: result,
+          };
+          res.status(200).send(returnResult);
+        }
       }
     }
   );

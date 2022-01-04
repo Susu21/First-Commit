@@ -3,15 +3,13 @@ const db = require("../LocalHost");
 
 exports.InsertEvent = async (req, res, next) => {
   const Date = req.body.Date;
-  const Comments = req.body.Comments;
-  const Details = req.body.Details;
   const base_person_ID = req.body.base_person_ID;
   const event_type_ID = req.body.event_type_ID;
   const Name = req.body.Name;
 
   db.query(
-    "INSERT INTO event_book (Date, Comments, Details, base_person_ID, event_type_ID, Name) VALUES (?,?,?,?,?,?)",
-    [Date, Comments, Details, base_person_ID, event_type_ID, Name],
+    "INSERT INTO event_book (Name, Date, base_person_ID, event_type_ID) VALUES (?,?,?,?)",
+    [Name, Date, base_person_ID, event_type_ID],
     (err, result) => {
       if (err) {
         console.log("Zaa bolkueenaaa!!!!!!!!!!!!!!!!!!!!!", err);
@@ -33,17 +31,14 @@ exports.InsertEvent = async (req, res, next) => {
   );
 };
 exports.SelectEvent = async (req, res, next) => {
-  const Name = req.body.Name;
-  const Details = req.body.Details;
   db.query(
-    "SELECT Date, Comments, Details FROM event_book where Name = ? OR Details = ?",
-    [Name, Details],
+    "SELECT event_type_ID, base_person_ID, Date, Name FROM event_book ",
     (err, result) => {
       if (err) {
         console.log("Zaa bolkueenaaa!!!!!!!!!!!!!!!!!!!!!", err);
         const returnResult = {
           status: "failed",
-          response: err,
+          response: "event selectlehed aldaa garlaa",
         };
         res.status(400).send(returnResult);
       } else {
@@ -58,3 +53,29 @@ exports.SelectEvent = async (req, res, next) => {
     }
   );
 };
+// result.forEach((el) => {
+//   db.query(
+//     "SELECT * FROM base_person where ID = ? ",
+//     [el.base_person_ID],
+//     (err, result) => {
+//       if (err) {
+//         console.log("person error", err);
+//         const returnResult = {
+//           status: "failed",
+//           response:
+//             "event oruulsan hunii medeelliig avahad aldaa garlaa",
+//         };
+//         res.send(returnResult);
+//       } else {
+//         console.log("person result", result);
+//         if (!isEmpty(result)) {
+//           const returnResult = {
+//             status: "success",
+//             response: { ...result, ...el },
+//           };
+//           res.send(returnResult);
+//         }
+//       }
+//     }
+//   );
+// });

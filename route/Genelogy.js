@@ -1,9 +1,9 @@
 const express = require("express");
-const { Genelogy, SelectGenelogy } = require("../controller/Genelogy");
+const { SelectGenelogy, insertGenelogy } = require("../controller/Genelogy");
 
 const router = express.Router();
 
-router.route("/").post(Genelogy);
-router.route("/").get(SelectGenelogy);
+router.route("/").post(insertGenelogy);
+router.route("/:ID").get(SelectGenelogy);
 
 module.exports = router;

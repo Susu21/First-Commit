@@ -30,7 +30,7 @@ exports.InsertEventType = async (req, res, next) => {
 exports.SelectEventType = async (req, res, next) => {
   const Description = req.body.Description;
   db.query(
-    "SELECT Description FROM event_type where Description = ?",
+    "SELECT ID,Description FROM event_type where Description = ?",
     [Description],
     (err, result) => {
       if (err) {
