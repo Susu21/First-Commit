@@ -126,20 +126,20 @@ exports.getFamily = async (req, res, next) => {
       res.status(400).send(returnResult);
     } else {
       if (!isEmpty(result)) {
-        let wife;
+        let Mother;
         let father;
         let children = [];
         const data = result[0];
         data.forEach((el) => {
           if (
             !isEmpty(el.father) &&
-            !isEmpty(el.wife) &&
+            !isEmpty(el.Mother) &&
             isEmpty(el.children)
           ) {
-            wife = el;
+            Mother = el;
           } else if (
             !isEmpty(el.father) &&
-            !isEmpty(el.wife) &&
+            !isEmpty(el.Mother) &&
             !isEmpty(el.children)
           ) {
             children.push({ name: el.children, eventDate: el.acEventStart });
@@ -148,7 +148,53 @@ exports.getFamily = async (req, res, next) => {
         const returnResult = {
           status: "success",
           response: {
-            wife,
+            Mother,
+            father: data[0].father,
+            family: data[0].family,
+            children,
+          },
+        };
+        res.status(200).send(returnResult);
+      }
+    }
+  });
+};
+
+exports.CallPapa = async (req, res, next) => {
+  const ID = req.params.ID;
+  db.query("call CallPapa(?)", [ID], (err, result) => {
+    if (err) {
+      console.log("Zaa bolkueenaaa!!!!!!!!!!!!!!!!!!!!!", err);
+      const returnResult = {
+        status: "failed",
+        response: err,
+      };
+      res.status(400).send(returnResult);
+    } else {
+      if (!isEmpty(result)) {
+        let Mother;
+        let father;
+        let children = [];
+        const data = result[0];
+        data.forEach((el) => {
+          if (
+            !isEmpty(el.father) &&
+            isEmpty(el.Mother) &&
+            isEmpty(el.children)
+          ) {
+            father = el;
+          } else if (
+            isEmpty(el.father) &&
+            !isEmpty(el.Mother) &&
+            isEmpty(el.children)
+          ) {
+            Mother = el;
+          }
+        });
+        const returnResult = {
+          status: "success",
+          response: {
+            Mother,
             father: data[0].father,
             family: data[0].family,
             children,
@@ -164,11 +210,12 @@ exports.insertFamily = async (req, res, next) => {
   const Name = req.body.Name;
   const Description = req.body.Description;
   const Created_Date = req.body.Created_Date;
-
+  console.log("start");
   db.query(
     "insert into family (Name, Description, Created_Date) values (?,?,?)",
     [Name, Description, Created_Date],
     (err, result) => {
+      console.log("query");
       if (err) {
         console.log("Zaa bolkueenaaa!!!!!!!!!!!!!!!!!!!!!", err);
         const returnResult = {
@@ -249,20 +296,20 @@ exports.getFamily = async (req, res, next) => {
       res.status(400).send(returnResult);
     } else {
       if (!isEmpty(result)) {
-        let wife;
+        let Mother;
         let father;
         let children = [];
         const data = result[0];
         data.forEach((el) => {
           if (
             !isEmpty(el.father) &&
-            !isEmpty(el.wife) &&
+            !isEmpty(el.Mother) &&
             isEmpty(el.children)
           ) {
-            wife = el;
+            Mother = el;
           } else if (
             !isEmpty(el.father) &&
-            !isEmpty(el.wife) &&
+            !isEmpty(el.Mother) &&
             !isEmpty(el.children)
           ) {
             children.push({ name: el.children, eventDate: el.acEventStart });
@@ -271,9 +318,9 @@ exports.getFamily = async (req, res, next) => {
         const returnResult = {
           status: "success",
           response: {
-            mothers: data[0].mothers,
-            fathers: data[0].father,
-            family: data[0].family,
+            Mother: Mother,
+            fathers: !isEmpty(data) ? data[0].father : null,
+            family: !isEmpty(data) ? data[0].family : null,
             children,
           },
         };

@@ -5,13 +5,13 @@ exports.CreateOvog = async (req, res, next) => {
   const Name = req.body.Name;
   const Description = req.body.Description;
   const Created_Date = req.body.Created_Date;
-  const base_person_ID = req.body.base_person_ID;
 
   db.query(
-    "INSERT INTO urgiin_ovog (Name, Description, Created_Date, base_person_ID) VALUES (?,?,?,?)",
-    [Name, Description, Created_Date, base_person_ID],
+    "INSERT INTO urgiin_ovog (Name, Description, Created_Date) VALUES (?,?,?)",
+    [Name, Description, Created_Date],
     (err, result) => {
       if (err) {
+        console.log(`err`, err);
         console.log("Zaa bolkueenaaa!!!!!!!!!!!!!!!!!!!!!", err);
         const returnResult = {
           status: "failed",
@@ -19,6 +19,7 @@ exports.CreateOvog = async (req, res, next) => {
         };
         res.status(400).send(returnResult);
       } else {
+        console.log(`result`, result);
         if (!isEmpty(result)) {
           const returnResult = {
             status: "success",
