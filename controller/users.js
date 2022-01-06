@@ -61,34 +61,30 @@ exports.CreateUser = async (req, res, next) => {
 exports.SelectUser = async (req, res, next) => {
   const userName = req.body.userName;
   console.log("Helloooooo********************************");
-  db.query(
-    "SELECT lName, fName, PhoneNumber, date_of_birth, place_of_birth FROM base_person WHERE userName = ?",
-    [userName],
-    (err, result) => {
-      if (err) {
-        console.log("Aldaa nuuts ug buruu", err);
+  db.query("SELECT * FROM base_person", [userName], (err, result) => {
+    if (err) {
+      console.log("Aldaa nuuts ug buruu", err);
+      const returnResult = {
+        status: "failed",
+        response: err,
+      };
+      res.status(400).send(returnResult);
+    } else {
+      if (!isEmpty(result)) {
+        const returnResult = {
+          status: "success",
+          response: result,
+        };
+        res.status(200).send(returnResult);
+      } else {
         const returnResult = {
           status: "failed",
-          response: err,
+          response: "Бүртгэлгүй Хэрэглэгч Байна.",
         };
-        res.status(400).send(returnResult);
-      } else {
-        if (!isEmpty(result)) {
-          const returnResult = {
-            status: "success",
-            response: result,
-          };
-          res.status(200).send(returnResult);
-        } else {
-          const returnResult = {
-            status: "failed",
-            response: "Бүртгэлгүй Хэрэглэгч Байна.",
-          };
-          res.status(200).send(returnResult);
-        }
+        res.status(200).send(returnResult);
       }
     }
-  );
+  });
 };
 exports.UpdateUser = async (req, res, next) => {
   const Password = req.body.Password;
@@ -122,6 +118,7 @@ exports.UpdateUser = async (req, res, next) => {
 exports.LoginUser = async (req, res, next) => {
   const userName = req.body.userName;
   const Password = req.body.Password;
+  console.log("HelloMAMACITA");
   db.query(
     "Select * from base_person where userName = ? AND Password = ?",
     [userName, Password],

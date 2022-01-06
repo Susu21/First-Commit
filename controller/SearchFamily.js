@@ -286,7 +286,7 @@ exports.DeleteFamily = async (req, res, next) => {
 };
 exports.getFamily = async (req, res, next) => {
   const ID = req.params.ID;
-  db.query("call getFamily(?)", [ID], (err, result) => {
+  db.query("call getFamily(pid)", [ID], (err, result) => {
     if (err) {
       console.log("Zaa bolkueenaaa!!!!!!!!!!!!!!!!!!!!!", err);
       const returnResult = {
